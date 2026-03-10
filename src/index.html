@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facebook Group Offer Bot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div class="header-content">
+          <h1>🤖 Facebook Group Offer Bot</h1>
+          <p>Monitor groups and automatically comment on posts</p>
+        </div>
+        <div class="status-indicator">
+          <span id="status-dot" class="status-dot stopped"></span>
+          <span id="status-text">Stopped</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <aside class="sidebar">
+          <nav class="nav-menu">
+            <button class="nav-button active" data-tab="configuration">
+              ⚙️ Configuration
+            </button>
+            <button class="nav-button" data-tab="monitoring">
+              📍 Monitoring
+            </button>
+            <button class="nav-button" data-tab="logs">📋 Logs</button>
+          </nav>
+        </aside>
+
+        <main class="content">
+          <!-- Configuration Tab -->
+          <div id="configuration" class="tab-content active">
+            <div class="card">
+              <h2>Account Settings</h2>
+              <form id="config-form">
+                <div class="form-group">
+                  <label for="email">Facebook Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="your.email@facebook.com"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Facebook Password</label>
+                  <div class="password-input-wrapper">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      required
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      class="toggle-password"
+                      id="toggle-password"
+                    >
+                      👁️
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button
+                    type="button"
+                    id="test-login-btn"
+                    class="btn btn-secondary"
+                  >
+                    🧪 Test Login
+                  </button>
+                  <span id="test-login-status" class="status-message"></span>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h2>Groups to Monitor</h2>
+              <div id="groups-container">
+                <div class="form-group">
+                  <label for="group-1">Group 1 URL</label>
+                  <input
+                    type="url"
+                    class="group-url"
+                    id="group-1"
+                    placeholder="https://www.facebook.com/groups/123456/"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="group-2">Group 2 URL (Optional)</label>
+                  <input
+                    type="url"
+                    class="group-url"
+                    id="group-2"
+                    placeholder="https://www.facebook.com/groups/789012/"
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                id="add-group-btn"
+                class="btn btn-secondary"
+              >
+                + Add Another Group
+              </button>
+            </div>
+
+            <div class="card">
+              <h2>Keywords & Comment</h2>
+              <div class="form-group">
+                <label for="keywords">Keywords to Search For</label>
+                <p class="help-text">
+                  Comma-separated, case-insensitive. Example:
+                  iphone,laptop,offer
+                </p>
+                <textarea
+                  id="keywords"
+                  name="keywords"
+                  rows="3"
+                  placeholder="Enter keywords separated by commas..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="comment">Comment to Post</label>
+                <p class="help-text">
+                  This comment will be posted on matching posts
+                </p>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  rows="4"
+                  placeholder="Enter your comment here..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="check-interval">Check Interval (seconds)</label>
+                <input
+                  type="number"
+                  id="check-interval"
+                  name="checkInterval"
+                  value="300"
+                  min="30"
+                  step="30"
+                />
+                <p class="help-text">
+                  How often to check for new posts (minimum 30 seconds)
+                </p>
+              </div>
+            </div>
+
+            <div class="card card-actions">
+              <button
+                type="button"
+                id="save-config-btn"
+                class="btn btn-primary"
+              >
+                💾 Save Configuration
+              </button>
+              <button
+                type="button"
+                id="load-config-btn"
+                class="btn btn-secondary"
+              >
+                📂 Load Configuration
+              </button>
+              <span id="save-status" class="status-message"></span>
+            </div>
+          </div>
+
+          <!-- Monitoring Tab -->
+          <div id="monitoring" class="tab-content">
+            <div class="card">
+              <h2>Bot Control</h2>
+              <div class="bot-controls">
+                <button
+                  type="button"
+                  id="start-bot-btn"
+                  class="btn btn-success btn-large"
+                >
+                  ▶️ Start Bot
+                </button>
+                <button
+                  type="button"
+                  id="stop-bot-btn"
+                  class="btn btn-danger btn-large"
+                  disabled
+                >
+                  ⏹️ Stop Bot
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Real-Time Status</h2>
+              <div class="status-box">
+                <div class="status-header">
+                  <h3>Current Activity</h3>
+                  <button
+                    type="button"
+                    id="clear-status-btn"
+                    class="btn btn-sm btn-secondary"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <div id="real-time-status" class="status-display">
+                  <p class="empty-state">
+                    Bot is stopped. Click "Start Bot" to begin monitoring.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2>Statistics</h2>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-label">Comments Posted</span>
+                  <span class="stat-value" id="comments-posted">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Posts Found</span>
+                  <span class="stat-value" id="posts-found">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Uptime</span>
+                  <span class="stat-value" id="uptime">00:00:00</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Last Check</span>
+                  <span class="stat-value" id="last-check">--:--:--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logs Tab -->
+          <div id="logs" class="tab-content">
+            <div class="card">
+              <h2>Application Logs</h2>
+              <div class="logs-header">
+                <button
+                  type="button"
+                  id="clear-logs-btn"
+                  class="btn btn-secondary"
+                >
+                  🗑️ Clear Logs
+                </button>
+                <label class="log-filter">
+                  <input type="checkbox" id="auto-scroll" checked />
+                  Auto-scroll
+                </label>
+              </div>
+              <div id="logs-container" class="logs-container">
+                <p class="log-entry log-info">[INFO] Application started</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <footer class="footer">
+        <p>Facebook Group Offer Bot v1.0.0 | Created with ❤️ for automation</p>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
