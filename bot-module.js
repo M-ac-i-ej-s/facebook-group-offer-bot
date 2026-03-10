@@ -184,7 +184,7 @@ class FacebookGroupBot extends EventEmitter {
       this.emit('status', '🚀 Launching browser...');
       
       this.browser = await puppeteer.launch({
-        headless: false, // Set to true to hide the browser
+        headless: true,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',

@@ -154,7 +154,7 @@ FB_COMMENT=Thanks for posting! What's the lowest price?
 - Verify group URLs are correct and public
 - Check keyword spelling
 - Ensure you're a member of the group
-- Review browser console for errors (headless mode: set to false)
+- Headless mode is always enabled in this build (no visible browser window)
 
 ### Comments Not Posting
 
@@ -178,11 +178,7 @@ The bot will monitor the first group. To monitor multiple groups simultaneously,
 
 ### Headless Mode
 
-Edit `bot.js` line 23 to run without browser window:
-
-```javascript
-headless: true, // Set to true for headless mode
-```
+Headless mode is always enabled and cannot be changed via configuration.
 
 ## API Reference
 
@@ -220,7 +216,7 @@ new FacebookGroupBot(config);
 - Comment posting may fail due to rate limiting
 - Complex page dynamics may require additional selectors
 - 2FA-enabled accounts may cause login issues
-- Not compatible with headless mode without additional configuration for security checks
+- Headless mode may trigger additional Facebook verification checks in some sessions
 
 MIT License - see LICENSE file for details
 
